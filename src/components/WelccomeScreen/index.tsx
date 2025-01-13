@@ -20,7 +20,7 @@ const WelcomeScreen: React.FC = () => {
         <p className="text-center text-black font-normal mb-6">
           The safest platform to shop from social media vendors
         </p>
-        <div className="bg-[#FFEAFA] py-[12px] px-[16] cursor-pointer border border-solid border-[#8A226F] rounded-[12] w-full flex items-center">
+        <div className="bg-[#FFEAFA] py-[12px] px-[16px] cursor-pointer border border-solid border-[#8A226F] rounded-[12px] w-full flex items-center">
           <ul className="text-left  space-y-3 text-black">
             <li className="flex items-center">
               <span className="mr-2">
