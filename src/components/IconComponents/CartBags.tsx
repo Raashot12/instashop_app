@@ -1,6 +1,24 @@
 import * as React from "react"
+import {keyframes} from "@emotion/react"
+import styled from "@emotion/styled"
+
+const pulsate = keyframes`
+    0% {
+        transform: scale(1)
+    }
+    50% {
+        transform: scale(1.05)
+    }
+    100% {
+        transform: scale(1)
+    }
+`
+const CartBagSvg = styled.svg`
+  animation: ${pulsate} 2s ease infinite;
+`
+
 const CartBags = () => (
-  <svg
+  <CartBagSvg
     width={296}
     height={210}
     viewBox="0 0 296 210"
@@ -259,6 +277,6 @@ const CartBags = () => (
         fill="#131514"
       />
     </g>
-  </svg>
+  </CartBagSvg>
 )
 export default CartBags
