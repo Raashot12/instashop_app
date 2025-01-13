@@ -49,6 +49,7 @@ const ProfileSetupScreen: React.FC = () => {
           <button
             type="submit"
             className="bg-[#8a226f] text-white w-full py-3 rounded-full"
+            style={{boxShadow: "4px 8px 24px 0px rgba(254, 44, 85, 0.2)"}}
           >
             Continue
           </button>

@@ -101,7 +101,7 @@ const CreateStoreForm = () => {
       <form
         id="create-store-form"
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4"
+        className="space-y-4 min-h-[200px] max-h-[76vh] overflow-y-auto scrollbar-hide"
       >
         <div className="py-[12px] px-[16px] cursor-pointer border border-solid border-[rgba(0, 0, 0, 0.2)] rounded-[12px] w-full flex items-center justify-center">
           <div className="flex flex-col items-center gap-3">
@@ -161,73 +161,116 @@ const CreateStoreForm = () => {
           </div>
         </div>
 
-        <div>
+        <div className="relative">
           <input
+            id="storeName"
             type="text"
-            placeholder="Store name"
-            className={`w-full border border-gray-300 rounded-md h-[52px] px-3 placeholder-[rgba(0, 0, 0, 0.6)] ${
+            placeholder=" "
+            className={`peer w-full border border-gray-300 rounded-[12px] h-[52px] px-3 pt-5 pb-2 placeholder-transparent text-sm focus:outline-none  ${
               errors.storeName?.message ? "border-red-600" : "border-gray-300"
             }`}
             {...register("storeName")}
           />
+          <label
+            htmlFor="storeName"
+            className={`absolute left-3 top-1 text-gray-500 text-[12px] transition-all duration-200 pointer-events-none peer-placeholder-shown:top-[14px] peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-[#8A226F]`}
+          >
+            Store name
+          </label>
           {errors.storeName && (
-            <p className="text-red-500 text-sm">{errors.storeName.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.storeName.message}
+            </p>
           )}
         </div>
 
-        <div>
+        <div className="relative">
           <input
+            id="storeTag"
             type="text"
-            placeholder="Store tag name"
-            className={`w-full border border-gray-300 rounded-md h-[52px] px-3 placeholder-[rgba(0, 0, 0, 0.6)] ${
+            placeholder=" "
+            className={`peer w-full border border-gray-300 rounded-[12px] h-[52px] px-3 pt-5 pb-2 placeholder-transparent text-sm focus:outline-none  ${
               errors.storeTag?.message ? "border-red-600" : "border-gray-300"
             }`}
             {...register("storeTag")}
           />
+          <label
+            htmlFor="storeTag"
+            className={`absolute left-3 top-1 text-gray-500 text-[12px] transition-all duration-200 pointer-events-none peer-placeholder-shown:top-[14px] peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-[#8A226F]`}
+          >
+            Store tag name
+          </label>
           {errors.storeTag && (
-            <p className="text-red-500 text-sm">{errors.storeTag.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.storeTag.message}
+            </p>
           )}
         </div>
 
-        <div>
+        <div className="relative">
           <input
+            id="phoneNumber"
             type="text"
-            placeholder="Store phone number"
-            className={`w-full border border-gray-300 rounded-md h-[52px] px-3 placeholder-[rgba(0, 0, 0, 0.6)] ${
+            placeholder=" "
+            className={`peer w-full border border-gray-300 rounded-[12px] h-[52px] px-3 pt-5 pb-2 placeholder-transparent text-sm focus:outline-none ${
               errors.phoneNumber?.message ? "border-red-600" : "border-gray-300"
             }`}
             {...register("phoneNumber")}
           />
+          <label
+            htmlFor="phoneNumber"
+            className={`absolute left-3 top-1 text-gray-500 text-[12px] transition-all duration-200 pointer-events-none peer-placeholder-shown:top-[14px] peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-[#8A226F]`}
+          >
+            Store phone number
+          </label>
           {errors.phoneNumber && (
-            <p className="text-red-500 text-sm">{errors.phoneNumber.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.phoneNumber.message}
+            </p>
           )}
         </div>
 
-        <div>
+        <div className="relative">
           <input
+            id="email"
             type="email"
-            placeholder="Store email"
-            className={`w-full border border-gray-300 rounded-md h-[52px] px-3 placeholder-[rgba(0, 0, 0, 0.6)] ${
+            placeholder=" "
+            className={`peer w-full border border-gray-300 rounded-[12px] h-[52px] px-3 pt-5 pb-2 placeholder-transparent text-sm focus:outline-none   ${
               errors.email?.message ? "border-red-600" : "border-gray-300"
             }`}
             {...register("email")}
           />
+          <label
+            htmlFor="email"
+            className={`absolute left-3 top-1 text-gray-500 text-[12px] transition-all duration-200 pointer-events-none peer-placeholder-shown:top-[14px] peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-[#8A226F]`}
+          >
+            Store email
+          </label>
           {errors.email && (
-            <p className="text-red-500 text-sm">{errors.email.message}</p>
+            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
           )}
         </div>
 
-        <div>
+        <div className="relative">
           <input
+            id="category"
             type="text"
-            placeholder="Category"
-            className={`w-full border border-gray-300 rounded-md h-[52px] px-3 placeholder-[rgba(0, 0, 0, 0.6)] ${
+            placeholder=" "
+            className={`peer w-full border border-gray-300 rounded-[12px] h-[52px] px-3 pt-5 pb-2 placeholder-transparent text-sm focus:outline-none  ${
               errors.category?.message ? "border-red-600" : "border-gray-300"
             }`}
             {...register("category")}
           />
+          <label
+            htmlFor="category"
+            className={`absolute left-3 top-1 text-gray-500 text-[12px] transition-all duration-200 pointer-events-none peer-placeholder-shown:top-[14px] peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-[#8A226F]`}
+          >
+            Category
+          </label>
           {errors.category && (
-            <p className="text-red-500 text-sm">{errors.category.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.category.message}
+            </p>
           )}
         </div>
       </form>

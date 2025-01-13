@@ -11,10 +11,10 @@ const OnboardingPage = () => {
 
   return (
     <div>
-      <>{onboardingObject?.currentStep === 1 && <PhoneEmailScreen />}</>
+      {/* <>{onboardingObject?.currentStep === 1 && <PhoneEmailScreen />}</> */}
       <>{onboardingObject?.currentStep === 2 && <ProfileSetupScreen />}</>
       <>{onboardingObject?.currentStep === 3 && <CreateStoreForm />}</>
-      <>{onboardingObject?.currentStep === 4 && <CreateProduct />}</>
+      <>{onboardingObject?.currentStep === 1 && <CreateProduct />}</>
     </div>
   )
 }

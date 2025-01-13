@@ -37,7 +37,7 @@ const schema = z.object({
   instaShopShipping: z.boolean(),
 })
 
-const CreateProduct = () => {
+const ProductDetails = () => {
   const {
     handleSubmit,
     register,
@@ -51,7 +51,7 @@ const CreateProduct = () => {
       imageFile: string
     }[]
   >([])
-  console.log(selectedFileNames)
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
     const maxSize = 5 * 1024 * 1024 // 5MB
@@ -101,6 +101,12 @@ const CreateProduct = () => {
   }
 
   const onSubmit = (data: FormData) => {
+    if (selectedFileNames.length === 0) {
+      toast.error("Please upload a store logo", {
+        position: "top-center",
+      })
+      return
+    }
     console.log(data)
   }
   return (
@@ -110,9 +116,7 @@ const CreateProduct = () => {
       title={"Create a product"}
       submitButton={
         <div className="w-full flex gap-3 items-center justify-between">
-          <button
-            className="bg-[#fffff] text-[#8a226f] w-full border border-solid border-[#8A226F] py-3 rounded-full"
-          >
+          <button className="bg-[#fffff] text-[#8a226f] w-full border border-solid border-[#8A226F] py-3 rounded-full">
             Cancel
           </button>
           <button
@@ -416,4 +420,4 @@ const CreateProduct = () => {
   )
 }
 
-export default CreateProduct
+export default ProductDetails
