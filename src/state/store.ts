@@ -1,5 +1,4 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit"
-import {rtkQueryErrorLogger} from "./rtkQueryErrorLogger"
 import {baseApi as api} from "./baseApi"
 import onboardingSlice from "./onboardingSlice"
 // Combine reducers
@@ -13,7 +12,7 @@ export const setupStore = () => {
   return configureStore({
     reducer: rootReducer,
     middleware: getDefaultMiddleware =>
-      getDefaultMiddleware().concat(api.middleware).concat(rtkQueryErrorLogger),
+      getDefaultMiddleware().concat(api.middleware),
   })
 }
 
