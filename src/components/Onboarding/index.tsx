@@ -11,11 +11,13 @@ const Onboarding = ({
   submitButton,
   rewindNumber,
   verticalDot,
+  title = "Get started",
 }: {
   children: React.ReactNode
   submitButton: React.ReactElement
   rewindNumber?: number
   verticalDot?: boolean
+  title?: string
 }) => {
   const router = useRouter()
   const dispatch = useAppDispatch()
@@ -26,30 +28,33 @@ const Onboarding = ({
   return (
     <div className="flex flex-col w-full max-w-sm mx-auto justify-between bg-white min-h-screen pb-3 pt-3 px-3">
       <div>
-        <div className="w-full flex items-center justify-between">
+        <div className="w-full flex items-center justify-between mb-4">
           <div
-            className="flex items-center gap-2 cursor-pointer mb-4"
+            className="flex items-center gap-2 cursor-pointer"
             onClick={() => {
               if (rewindNumber === 0) {
                 router.push("/")
               } else {
-                console.log("1111")
                 dispatch(setCurrentStep(rewindNumber as number))
               }
             }}
           >
             <IconArrowBack />
-            <button className="text-black text-sm font-[500]">
-              Get Started
-            </button>
+            <button className="text-black text-[16px] font-[500]">{title}</button>
           </div>
-          {verticalDot && <IconVerticalDot />}
+          {verticalDot && (
+            <div className="cursor-pointer">
+              <IconVerticalDot />
+            </div>
+          )}
         </div>
-        <Stepper
-          steps={onboardingObject.totalSteps}
-          currentStep={onboardingObject.currentStep}
-          onStepClick={handleStepClick}
-        />
+        {!verticalDot && (
+          <Stepper
+            steps={onboardingObject.totalSteps}
+            currentStep={onboardingObject.currentStep}
+            onStepClick={handleStepClick}
+          />
+        )}
         <div className="">{children}</div>
       </div>
       {submitButton}

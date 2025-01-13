@@ -1,3 +1,4 @@
+import CreateProduct from "@/components/CreateProduct"
 import CreateStoreForm from "@/components/CreateStoreForm"
 import {useAppSelector} from "@/components/hooks"
 import PhoneEmailScreen from "@/components/PhoneEmail"
@@ -13,7 +14,7 @@ const OnboardingPage = () => {
       <>{onboardingObject?.currentStep === 1 && <PhoneEmailScreen />}</>
       <>{onboardingObject?.currentStep === 2 && <ProfileSetupScreen />}</>
       <>{onboardingObject?.currentStep === 3 && <CreateStoreForm />}</>
-      <>{onboardingObject?.currentStep === 3 && <CreateStoreForm />}</>
+      <>{onboardingObject?.currentStep === 4 && <CreateProduct />}</>
     </div>
   )
 }

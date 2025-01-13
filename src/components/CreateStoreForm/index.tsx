@@ -6,6 +6,8 @@ import Onboarding from "../Onboarding"
 import {toast} from "react-toastify"
 import Image from "next/image"
 import {imageUpload} from "../data"
+import {useAppDispatch} from "../hooks"
+import {setCurrentStep} from "@/state/onboardingSlice"
 
 const storeFormSchema = z.object({
   storeName: z.string().min(1, "Store name is required"),
@@ -63,11 +65,12 @@ const CreateStoreForm = () => {
     setImagePreview(imageUrl)
     setImageFile(file)
   }
+  const dispatch = useAppDispatch()
 
+  const handleStepClick = (step: number) => {
+    dispatch(setCurrentStep(step)) // Update the active step
+  }
   const onSubmit = (data: StoreFormValues) => {
-    toast.success("Form submitted successfully!", {
-      position: "top-center",
-    })
     if (!imageFile) {
       toast.error("Please upload a store logo", {
         position: "top-center",
@@ -76,6 +79,10 @@ const CreateStoreForm = () => {
     }
     console.log("Form Data:", data)
     console.log("Uploaded Image:", imageFile)
+    toast.success("Form submitted successfully!", {
+      position: "top-center",
+    })
+    handleStepClick(4)
   }
 
   return (
