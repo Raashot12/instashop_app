@@ -8,6 +8,8 @@ import {toast} from "react-toastify"
 import {zodResolver} from "@hookform/resolvers/zod"
 import {z} from "zod"
 import Image from "next/image"
+import IconClose from "../IconComponents/IconClose"
+import HorizontalDot from "../IconComponents/HorizontalDot"
 
 type FormData = {
   productTitle: string
@@ -27,7 +29,7 @@ const schema = z.object({
   productDescription: z.string().min(1, "Product description is required"),
   price: z.string().min(1, "Price is required"),
   oldPrice: z.string().min(1, "Price is required"),
-  productCollection: z.string().min(1, "Product collection is required"),
+  productCollection: z.string().optional(),
   inventoryStocks: z.string().min(1, "Inventory stocks is required"),
   inventoryStocksTwo: z.string().min(1, "Inventory stocks is required"),
   inventoryVariations: z
@@ -42,16 +44,18 @@ const CreateProduct = () => {
     handleSubmit,
     register,
     formState: {errors},
+    watch,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   })
+  const [inventoryVariation, setInventoryVariation] = useState(false)
   const [selectedFileNames, setSelectedFileNames] = useState<
     {
       fileName: string
       imageFile: string
     }[]
   >([])
-  console.log(selectedFileNames)
+  const productCollectionValue = watch("productCollection")
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
     const maxSize = 5 * 1024 * 1024 // 5MB
@@ -99,6 +103,20 @@ const CreateProduct = () => {
 
     setSelectedFileNames(fileData)
   }
+  const [collections, setCollections] = useState<string[]>([])
+
+  const handleAddCollection = () => {
+    if (
+      productCollectionValue.trim() !== "" &&
+      !collections.includes(productCollectionValue)
+    ) {
+      setCollections(prev => [...prev, productCollectionValue])
+    }
+  }
+
+  const handleRemoveCollection = (index: number) => {
+    setCollections(prev => prev.filter((_, i) => i !== index))
+  }
 
   const onSubmit = (data: FormData) => {
     console.log(data)
@@ -110,9 +128,7 @@ const CreateProduct = () => {
       title={"Create a product"}
       submitButton={
         <div className="w-full flex gap-3 items-center justify-between">
-          <button
-            className="bg-[#fffff] text-[#8a226f] w-full border border-solid border-[#8A226F] py-3 rounded-full"
-          >
+          <button className="bg-[#fffff] text-[#8a226f] w-full border border-solid border-[#8A226F] py-3 rounded-full">
             Cancel
           </button>
           <button
@@ -121,7 +137,7 @@ const CreateProduct = () => {
             className="bg-[#8a226f] text-white w-full py-3 rounded-full"
             style={{boxShadow: "4px 8px 24px 0px rgba(254, 44, 85, 0.2)"}}
           >
-            Continue
+            Save
           </button>
         </div>
       }
@@ -233,12 +249,32 @@ const CreateProduct = () => {
                 )}
               </div>
             </div>
-            <div>
-              <div className="relative">
-                <textarea
+            <div className="relative w-full border border-gray-300 rounded-[12px] h-[95px] px-3 pt-5 pb-2">
+              <div className="space-y-2 flex items-center gap-2 shrink-0 overflow-x-auto mt-1">
+                {collections.map((collection, index) => (
+                  <div key={index} style={{marginTop: 0}}>
+                    <div className="flex w-fit gap-2 items-center justify-between bg-gray-100 px-2 py-1 rounded-[90px]">
+                      <span className="text-[12px] font-[400] text-gray-400 text-nowrap">
+                        {collection}
+                      </span>
+                      <button
+                        type="button"
+                        className="text-red-500 text-sm"
+                        onClick={() => handleRemoveCollection(index)}
+                      >
+                        <IconClose />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-center">
+                <input
                   id="productCollection"
-                  placeholder=" "
-                  className={`peer w-full border border-gray-300 rounded-[12px] h-[68px] px-3 pt-5 pb-2 placeholder-transparent text-sm focus:outline-none  ${
+                  placeholder="Search or create collection"
+                  className={`peer ${
+                    collections?.length >= 1 ? "" : "placeholder-transparent"
+                  }  text-sm focus:outline-none flex-grow ${
                     errors.productCollection
                       ? "border-red-600"
                       : "border-gray-300"
@@ -247,17 +283,34 @@ const CreateProduct = () => {
                 />
                 <label
                   htmlFor="productCollection"
-                  className={`absolute left-3 top-1 text-gray-500 text-[12px] transition-all duration-200 pointer-events-none peer-placeholder-shown:top-[14px] peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-1 peer-focus:text-[10px] peer-focus:text-[#8A226F]`}
+                  className={`absolute left-3 top-1 text-gray-500 ${
+                    collections?.length >= 1 ? "text-[10px]" : "text-[12px]"
+                  }  transition-all duration-200 pointer-events-none ${
+                    collections?.length >= 1
+                      ? "peer-placeholder-shown:top-[3px]"
+                      : "peer-placeholder-shown:top-[12px]"
+                  } ${
+                    collections?.length >= 1
+                      ? "peer-placeholder-shown:text-[10px]"
+                      : "peer-placeholder-shown:text-base"
+                  }  peer-placeholder-shown:text-gray-400 peer-focus:top-1 peer-focus:text-[10px]  peer-focus:text-[#8A226F]`}
                 >
                   Product Collection
                 </label>
-                {errors.productCollection && (
-                  <p className="text-red-500 text-sm">
-                    {errors.productCollection.message}
-                  </p>
-                )}
+                <button
+                  type="button"
+                  className="ml-2 bg-[#8A226F] text-white rounded-full w-[22px] h-[22px] flex items-center justify-center"
+                  onClick={handleAddCollection}
+                >
+                  +
+                </button>
               </div>
             </div>
+            {errors.productCollection && (
+              <p className="text-red-500 text-sm">
+                {errors.productCollection.message}
+              </p>
+            )}
             <div className="relative">
               <input
                 id="inventoryStocks"
@@ -334,7 +387,7 @@ const CreateProduct = () => {
           <p className="w-full text-left py-3 font-medium cursor-pointer">
             Inventory variations
           </p>
-          <div className="flex gap-3 items-center">
+          <div className="flex gap-3 items-center mb-4">
             <input
               type="checkbox"
               style={{
@@ -342,12 +395,123 @@ const CreateProduct = () => {
                 height: "25px",
                 accentColor: "#8A226F",
               }}
+              checked={inventoryVariation}
+              onChange={e => setInventoryVariation(e.target.checked)}
             />
             <p className="font-[400] text-sm text-[#666666]">
               This product is variable; has different colors, sizes, weight,
               materials, etc.
             </p>
           </div>
+          {inventoryVariation && (
+            <div className="space-y-3">
+              <div className="relative w-full border border-gray-300 rounded-[12px] h-fit px-3 pt-1 pb-2">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <span className="text-[10px] text-[#666666] p-0 my-0">
+                      Option 1
+                    </span>
+                    <p className="font-[500] text-[14px]  p-0 my-0">Color</p>
+                  </div>
+                  <div className="cursor-pointer">
+                    <HorizontalDot />
+                  </div>
+                </div>
+                <div className="space-y-2 flex items-center gap-2 shrink-0 overflow-x-auto mt-1">
+                  {["Red", "White", "Black"].map((collection, index) => (
+                    <div key={index} style={{marginTop: 0}}>
+                      <div className="flex w-fit gap-2 items-center justify-between bg-gray-100 px-2 py-1 rounded-[90px]">
+                        <span className="text-[12px] font-[400] text-gray-400 text-nowrap">
+                          {collection}
+                        </span>
+                        <button
+                          type="button"
+                          className="text-red-500 text-sm"
+                          onClick={() => handleRemoveCollection(index)}
+                        >
+                          <IconClose />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <input
+                  placeholder="Enter a values"
+                  className="placeholder:text-[12px]"
+                />
+              </div>
+              <div className="relative w-full border border-gray-300 rounded-[12px] h-fit px-3 pt-1 pb-2">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <span className="text-[10px] text-[#666666] p-0 my-0">
+                      Option 2
+                    </span>
+                    <p className="font-[500] text-[14px]  p-0 my-0">Size</p>
+                  </div>
+                  <div className="cursor-pointer">
+                    <HorizontalDot />
+                  </div>
+                </div>
+                <div className="space-y-2 flex items-center gap-2 shrink-0 overflow-x-auto mt-1">
+                  {["Large", "Small", "XL"].map((collection, index) => (
+                    <div key={index} style={{marginTop: 0}}>
+                      <div className="flex w-fit gap-2 items-center justify-between bg-gray-100 px-2 py-1 rounded-[90px]">
+                        <span className="text-[12px] font-[400] text-gray-400 text-nowrap">
+                          {collection}
+                        </span>
+                        <button
+                          type="button"
+                          className="text-red-500 text-sm"
+                          onClick={() => handleRemoveCollection(index)}
+                        >
+                          <IconClose />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <input
+                  placeholder="Enter a values"
+                  className="placeholder:text-[12px]"
+                />
+              </div>
+              <div className="relative w-full border border-gray-300 rounded-[12px] h-fit px-3 pt-1 pb-2">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <span className="text-[10px] text-[#666666] p-0 my-0">
+                      Option 2
+                    </span>
+                    <p className="font-[500] text-[14px]  p-0 my-0">Size</p>
+                  </div>
+                  <div className="cursor-pointer">
+                    <HorizontalDot />
+                  </div>
+                </div>
+                <div className="space-y-2 flex items-center gap-2 shrink-0 overflow-x-auto mt-1">
+                  {["Large", "Small", "XL"].map((collection, index) => (
+                    <div key={index} style={{marginTop: 0}}>
+                      <div className="flex w-fit gap-2 items-center justify-between bg-gray-100 px-2 py-1 rounded-[90px]">
+                        <span className="text-[12px] font-[400] text-gray-400 text-nowrap">
+                          {collection}
+                        </span>
+                        <button
+                          type="button"
+                          className="text-red-500 text-sm"
+                          onClick={() => handleRemoveCollection(index)}
+                        >
+                          <IconClose />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <input
+                  placeholder="Enter a values"
+                  className="placeholder:text-[12px]"
+                />
+              </div>
+            </div>
+          )}
         </div>
         <div className="w-full h-[1px] bg-gray-200 my-3"></div>
         <Accordion
